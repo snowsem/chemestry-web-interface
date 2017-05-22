@@ -32,7 +32,8 @@
                                     <th scope="row">{{$material->id}}</th>
                                     <td>{{$material->name}}</td>
 
-                                    <td><a href="{{url('materials/'.$material->id)}}">Просмотр</a></td>
+
+                                    <td><a class="btn btn-sm small btn-info" href="{{url('materials/'.$material->id)}}">Просмотр</a>  <button class="btn btn-sm small btn-danger btn-remove-item" value="{{$material->id}}" url="{{url('materials/'.$material->id)}}">X</button></td>
                                 </tr>
                             @endforeach
 
@@ -43,4 +44,40 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('button.btn-remove-item').on('click', function(e) {
+                var url = $(this).attr("url");
+                var value = $(this).attr("value");
+                var tr = $(this).parent().parent();
+                $.ajax({
+                    headers:
+                        {
+                            'X-CSRF-Token': $('input[name="_token"]').val()
+                        },
+                    url: url,
+                    type: "DELETE",
+
+                    success:function(data){
+
+                        if(data == 'error'){
+
+                        }else{
+
+                            tr.hide("slow", function() {
+                                tr.remove();
+                            });
+                        }
+                    },
+                    error: function(data, errorThrown){
+                        console.log(errorThrown);
+                    }
+
+
+                });
+            });
+        });
+
+
+    </script>
 @endsection

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+
+
 @section('content')
     <div class="container">
         <div class="row">
@@ -18,6 +20,7 @@
                                 <th>Единица измерения</th>
                                 <th>Описание</th>
                                 <th>Alias</th>
+                                <th>Действия</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -28,6 +31,7 @@
                                     <td>{{$parameter->unit}}</td>
                                     <td>{{$parameter->description}}</td>
                                     <td>{{$parameter->alias}}</td>
+                                    <td><button class="btn btn-sm btn-danger btn-remove-item" value="{{$parameter->id}}" url="{{url('parameters/'.$parameter->id)}}">X</button></td>
                                 </tr>
                                 @endforeach
 
@@ -38,4 +42,32 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('button.btn-remove-item').on('click', function(e) {
+                var url = $(this).attr("url");
+                var value = $(this).attr("value");
+                var tr = $(this).parent().parent();
+                function success(e) {
+                    //alert(e);
+                    tr.hide("slow", function() {
+                        tr.remove();
+                    });
+                }
+
+                $.ajax({
+                    headers:
+                        {
+                            'X-CSRF-Token': $('input[name="_token"]').val()
+                        },
+                    url: url,
+                    type: "DELETE",
+                    success: success(e),
+
+                });
+            });
+        });
+
+
+    </script>
 @endsection

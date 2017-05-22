@@ -80,18 +80,15 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Polosin <b>LolKek</b>Chemestry
                 </div>
                 @if(Session::has('message'))
                     <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
                 @endif
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="{{ url('/login') }}">Login</a>
+
                 </div>
             </div>
         </div>

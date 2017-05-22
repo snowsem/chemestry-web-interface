@@ -1,7 +1,5 @@
 @extends('layouts.app')
 <!-- Latest compiled and minified CSS -->
-<script src="/js/jquery-lates-min.js"></script>
-
 
 @section('content')
     <div class="container">
@@ -58,9 +56,12 @@
             </div>
         </div>
     </div>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="/js/bootstrap-select.min.js"></script>
+
+
+
 @endsection
 <link rel="stylesheet" href="/css/bootstrap-select.min.css">
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="/js/bootstrap-select.min.js"></script>
 

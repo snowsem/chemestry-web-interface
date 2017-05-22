@@ -24,3 +24,4 @@ Route::post('materials/{id}/create', 'MaterialController@storeParameter');
 Route::resource('/parameters', 'ParameterController');
 Route::resource('/coefficients', 'CoefficientController');
 
+Route::get('api/get_material_parameters/{id}', 'HomeController@getMaterialParams');

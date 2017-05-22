@@ -4,12 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Parameter;
 use Illuminate\Http\Request;
+use Mockery\Exception;
 use Validator;
 use Redirect;
 use Session;
 
 class ParameterController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function __construct()
+    {   //->only*('methods')
+        //$this->middleware(['auth', 'admin']);
+        $this->middleware(['auth']);
+    }
+
     public function index() {
 
         $model = Parameter::all();
@@ -21,6 +31,10 @@ class ParameterController extends Controller
         return view('parameter.create');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request) {
 
         $validator = Validator::make($request->all(), [
@@ -78,5 +92,13 @@ class ParameterController extends Controller
     }
     public function show(){
 
+    }
+    public function destroy($id) {
+        try {
+            Parameter::findOrFail($id)->delete();
+            redirect()->back();
+        } catch (Exception $e) {
+            redirect()->back();
+        }
     }
 }

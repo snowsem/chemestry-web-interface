@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class MaterialParameter extends Model
 {
     protected $table = 'material_parameter';

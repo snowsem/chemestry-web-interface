@@ -12,17 +12,34 @@ use Session;
 
 class MaterialController extends Controller
 {
+
+    public function __construct()
+    {   //->only*('methods')
+        //$this->middleware(['auth', 'admin']);
+        $this->middleware(['auth']);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index() {
 
         $model = Material::all();
         return view('material.index', ['materials' => $model]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create() {
 
         return view('material.create');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request) {
 
         $validator = Validator::make($request->all(), [
@@ -64,10 +81,10 @@ class MaterialController extends Controller
                     ->withInput();
 
             }
-
-
         }
     }
+
+
     public function show($id)
     {
         try {
@@ -125,6 +142,16 @@ class MaterialController extends Controller
                 return redirect('materials/' . $id . '');
             }
         }
+    }
 
+    public function destroy($id){
+
+        try {
+            Material::findOrFail($id)->delete();
+            return 'success';
+        } catch (Exception $e) {
+
+            return 'error';
+        }
     }
 }
