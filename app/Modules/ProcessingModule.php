@@ -44,8 +44,8 @@ class ProcessingModule
 
             $this->data[] = array(
                 'i' => $i,
-                'T' => $this->T($i),
-                'V' => $this->V($this->T($i))
+                'T' => round($this->T($i),3),
+                'V' => round($this->V($this->T($i)),3)
                 );
 
             //print $i.'-------'.$this->T($i).'<br>';
@@ -60,8 +60,8 @@ class ProcessingModule
 
             $this->data[] = array(
                 'i' => $this->L,
-                'T' => $this->T($this->L),
-                'V' => $this->V($this->T($this->L))
+                'T' => round($this->T($this->L),3),
+                'V' => round($this->V($this->T($this->L)),3)
             );
             //print $this->L.'-------'.$this->T($this->L).'<br>';
         }

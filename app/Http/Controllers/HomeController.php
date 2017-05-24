@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 use App\Material;
 use App\Modules;
 use Illuminate\Http\Request;
+use Validator;
+use Redirect;
+use Session;
+
 
 class HomeController extends Controller
 {
@@ -40,12 +44,37 @@ class HomeController extends Controller
         $processing->n = 0.4;
         $processing->au = 2000;
         //print '<pre>';
-        //$processing->printJSONresult();
+        $result = $processing->getJSONresult();
         //print '</pre>';
         //print $processing->Q();
         $materials = Material::all();
-        return view('home', ['materials' => $materials]);
+
+        return view('home', ['materials' => $materials, 'json_result' => $result,'result' => json_decode($result)]);
     }
+
+    public function computing(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'step' => 'required|numeric|min:0',
+            'L' => 'required|numeric|min:0',
+            'W' => 'required|numeric|min:0',
+            'H' => 'required|numeric|min:0',
+            'Vu' => 'required|numeric',
+            'Tu' => 'required|numeric',
+
+        ]);
+        if ($validator->fails()) {
+
+            return redirect('/home')
+                ->withErrors($validator)
+                ->withInput();
+        } else {
+
+        }
+
+
+    }
+
     public function getMaterialParams($id) {
         $material = Material::find($id);
 

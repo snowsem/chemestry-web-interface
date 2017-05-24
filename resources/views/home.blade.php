@@ -1,67 +1,126 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+
+        <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Исследование канала</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('coefficients') }}">
+                    <div id="chart"></div>
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('computing') }}">
                         {{ csrf_field() }}
                     <div class="row">
-                        <div class="col-md-6">
-                            <h4>Геометрические параметры канала</h4>
-
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <label for="name" class="col-md-4 control-label">Длина, м</label>
+                        <div class="col-md-4">
+                            <div class="form-group{{ $errors->has('step') ? ' has-error' : '' }}">
+                                <label for="name" class="col-md-6 control-label">Шаг</label>
 
                                 <div class="col-md-3">
-                                    <input id="name" type="text" class="form-control" name="name"
-                                           value="{{ old('name') }}" required>
+                                    <input id="name" type="text" class="form-control input-sm" name="step"
+                                           value="{{ old('step', 0.1) }}" >
 
-                                    @if ($errors->has('name'))
+                                    @if ($errors->has('step'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('step') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
+                            <h4>Геометрические параметры канала</h4>
 
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <label for="name" class="col-md-4 control-label">Ширина, м</label>
+                            <div class="form-group{{ $errors->has('L') ? ' has-error' : '' }}">
+                                <label for="name" class="col-md-6 control-label">Длина, м</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name"
-                                           value="{{ old('name') }}" required>
+                                    <input id="L" type="text" class="form-control input-sm" name="L"
+                                           value="{{ old('L') }}" >
 
-                                    @if ($errors->has('name'))
+                                    @if ($errors->has('L'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('L') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <label for="name" class="col-md-4 control-label">Высота, м</label>
+                            <div class="form-group{{ $errors->has('W') ? ' has-error' : '' }}">
+                                <label for="name" class="col-md-6 control-label">Ширина, м</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name"
-                                           value="{{ old('name') }}" required>
+                                    <input id="name" type="text" class="form-control input-sm" name="W"
+                                           value="{{ old('W') }}" >
 
-                                    @if ($errors->has('name'))
+                                    @if ($errors->has('W'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('W') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
+
+                            <div class="form-group{{ $errors->has('H') ? ' has-error' : '' }}">
+                                <label for="name" class="col-md-6 control-label">Высота, м</label>
+
+                                <div class="col-md-6">
+                                    <input id="name" type="text" class="form-control input-sm" name="H"
+                                           value="{{ old('H') }}">
+
+                                    @if ($errors->has('H'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('H') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <h4>Режимные параметры</h4>
+
+                            <div class="form-group{{ $errors->has('Vu') ? ' has-error' : '' }}">
+                                <label for="name" class="col-md-6 control-label">Скорость движения крышки, м/с</label>
+
+                                <div class="col-md-6">
+                                    <input id="name" type="text" class="form-control input-sm" name="Vu"
+                                           value="{{ old('Vu') }}" >
+
+                                    @if ($errors->has('Vu'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('Vu') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group{{ $errors->has('Tu') ? ' has-error' : '' }}">
+                                <label for="name" class="col-md-6 control-label">Температура, &deg;C</label>
+
+                                <div class="col-md-6">
+                                    <input id="name" type="text" class="form-control input-sm" name="Tu"
+                                           value="{{ old('Tu') }}" >
+
+                                    @if ($errors->has('Tu'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('Tu') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+
                             <h4>Выбор материала</h4>
                             <select class="selectpicker" id="material_select" name="material_id">
+
                                 @foreach($materials as $material)
-                                    <option value="{{$material->id}}">{{$material->name}}</option>
+
+                                    @if (old('material_id') == $material->id)
+                                        <option value="{{$material->id}}" selected>{{$material->name}}</option>
+                                    @else
+                                        <option value="{{$material->id}}">{{$material->name}}</option>
+                                    @endif
+
                                 @endforeach
 
                             </select><hr>
@@ -69,65 +128,36 @@
                             <table id="parameters_table" class="table table-hover table-striped">
 
                                 <tbody>
-                                @foreach($materials as $material)
-                                    <tr>
-                                        <th scope="row">{{$material->id}}</th>
-                                        <td>{{$material->name}}</td>
 
-
-                                        <td><a class="btn btn-sm small btn-info" href="{{url('materials/'.$material->id)}}">Просмотр</a>  <button class="btn btn-sm small btn-danger btn-remove-item" value="{{$material->id}}" url="{{url('materials/'.$material->id)}}">X</button></td>
-                                    </tr>
-                                @endforeach
 
                                 </tbody>
                             </table>
 
                         </div>
 
-                        <div class="col-md-3">
-
-                            <h4>Режимные параметры</h4>
-
-                            <div class="form-group{{ $errors->has('alias') ? ' has-error' : '' }}">
-                                <label for="name" class="col-md-4 control-label">Скорость движения крышки, м/с</label>
-
-                                <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="alias"
-                                           value="{{ old('alias') }}" required>
-
-                                    @if ($errors->has('alias'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('alias') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('unit') ? ' has-error' : '' }}">
-                                <label for="name" class="col-md-4 control-label">Температура, &deg;C</label>
-
-                                <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="unit"
-                                           value="{{ old('unit') }}" required>
-
-                                    @if ($errors->has('unit'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('unit') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-
-
-
-
-
-                        </div>
-
                         <div class="col-md-4">
-                            ss
+                            <table id="result_table" class="table table-hover table-striped small">
+                                <thead>
+                                <tr>
+                                    <th>i</th>
+                                    <th>T</th>
+                                    <th>V</th>
+                                </tr>
+                                </thead>
 
+                                <tbody>
+                                @foreach($result as $r)
+                                    <tr>
+                                        <td>{{$r->i}}</td>
+                                        <td>{{$r->T}}</td>
+                                        <td>{{$r->V}}</td>
+                                    </tr>
+                                @endforeach
+
+
+
+                                </tbody>
+                            </table>
 
                         </div>
                         <div class="form-group">
@@ -180,7 +210,7 @@
                             $('#parameters_table tbody').hide("slow", function() {
                                 $('#parameters_table tbody').remove();
                             });
-                            $("#parameters_table").append("<tbody></tbody>");
+                            $("#parameters_table").append("<tbody class='small'></tbody>");
 
                             if (typeof variable === 'undefined' || variable === null) {
                                 console.log(data.material.parameters);

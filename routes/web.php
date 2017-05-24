@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::post('/computing', 'HomeController@computing');
 Route::resource('/materials', 'MaterialController');
 Route::get('materials/{id}/create', 'MaterialController@createParameter');
 Route::post('materials/{id}/create', 'MaterialController@storeParameter');

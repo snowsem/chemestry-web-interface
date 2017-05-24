@@ -22,7 +22,7 @@ class InsertParams extends Migration
         ]);
         DB::table('parameters')->insert([
             'name' => 'Удельная теплоемкость',
-            'unit' => 'Дж/(кг* 0C)',
+            'unit' => 'Дж/(кг* °C)',
             'description' => '',
             'alias' => 'c'
         ]);
@@ -40,13 +40,13 @@ class InsertParams extends Migration
         ]);
         DB::table('parameters')->insert([
             'name' => 'Температура коэффициента вязкости материала',
-            'unit' => '1/0C',
+            'unit' => '1/°C',
             'description' => '',
             'alias' => 'b'
         ]);
         DB::table('parameters')->insert([
             'name' => 'Температура приведения',
-            'unit' => '0C',
+            'unit' => '°C',
             'description' => '',
             'alias' => 'Tr'
         ]);
@@ -58,7 +58,7 @@ class InsertParams extends Migration
         ]);
         DB::table('parameters')->insert([
             'name' => 'Коэффициент теплоотдачи от крышки канала к материалу',
-            'unit' => 'Вт/(м2*0C)',
+            'unit' => 'Вт/(м²*°C)',
             'description' => '',
             'alias' => 'au'
         ]);
